@@ -209,6 +209,7 @@ pub struct Python {
     enable_pip_review_local: Option<bool>,
     enable_pipupgrade: Option<bool>,
     pipupgrade_arguments: Option<String>,
+    pipx_skip: Option<Vec<String>>,
 }
 
 #[derive(Deserialize, Default, Debug, Merge)]
@@ -1485,6 +1486,14 @@ impl Config {
             .as_ref()
             .and_then(|python| python.enable_pip_review_local)
             .unwrap_or(false);
+    }
+
+    pub fn pipx_skip(&self) -> Vec<String> {
+        self.config_file
+            .python
+            .as_ref()
+            .and_then(|p| p.pipx_skip.clone())
+            .unwrap_or_default()
     }
 
     pub fn display_time(&self) -> bool {

@@ -374,7 +374,7 @@ pub fn run_pipx_update(ctx: &ExecutionContext) -> Result<()> {
     let pipx = require("pipx")?;
     print_separator("pipx");
 
-    let mut command_args = vec!["upgrade-all"];
+    let mut command_args = vec!["upgrade-all", "--include-injected"];
 
     // pipx version 1.4.0 introduced a new command argument `pipx upgrade-all --quiet`
     // (see https://pipx.pypa.io/stable/docs/#pipx-upgrade-all)
@@ -385,6 +385,13 @@ pub fn run_pipx_update(ctx: &ExecutionContext) -> Result<()> {
     let version = Version::parse(&version_str?);
     if matches!(version, Ok(version) if version >= Version::new(1, 4, 0)) {
         command_args.push("--quiet")
+    }
+
+    let exclude = ctx.config().pipx_skip();
+    let mut exclude = exclude.iter().map(String::as_str).collect::<Vec<&str>>();
+    if !exclude.is_empty() {
+        command_args.push("--skip");
+        command_args.append(&mut exclude);
     }
 
     ctx.run_type().execute(pipx).args(command_args).status_checked()

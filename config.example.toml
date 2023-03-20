@@ -96,7 +96,7 @@
 # enable_pip_review_local = true                   ###disabled by default
 # enable_pipupgrade = true                         ###disabled by default
 # pipupgrade_arguments = "-y -u --pip-path pip"    ###disabled by default
-
+# pipx_skip = ["conan"]
 
 [composer]
 # self_update = true
@@ -167,7 +167,6 @@
 
 # Arguments to pass Git when pulling Repositories
 # arguments = "--rebase --autostash"
-
 
 [windows]
 # Manually select Windows updates
